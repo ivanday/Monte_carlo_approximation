@@ -27,22 +27,28 @@ function updateCanvas() {
 }
 
 function generateThrows(n){
+    var outsideCount = 0;
+    var insideCount = 0;
     for(var i = 0; i < n; i++){
-        randX = Math.floor(Math.random() * 201);
-        randY = Math.floor(Math.random() * 201);
+        var randX = Math.floor(Math.random() * 201);
+        var randY = Math.floor(Math.random() * 201);
         var a = randX - centerX;
-        var b = randX - centerY;
+        var b = randY - centerY;
         var c = Math.sqrt(a*a + b*b);
+        console.log(c);
         if(c > 100){
             drawPixel(randX, randY, 0, 255, 0, 255);
+            outsideCount = outsideCount + 1;
         }
         else{
             drawPixel(randX, randY, 255, 0, 0, 255);
+            insideCount = insideCount + 1;
         }
 
     }
+    console.log(outsideCount + " " + insideCount);
 }
 
 drawPixel(100,100,0,0,255,255);
-generateThrows(20);
+generateThrows(100);
 updateCanvas();
