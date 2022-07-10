@@ -1,4 +1,7 @@
 
+//initialize counts
+var outsideCount = 0;
+var insideCount = 0;
 
 //draw the circle in the middle of the canvas
 var c = document.getElementById("monteCarlo");
@@ -21,15 +24,9 @@ function drawPoint (x, y, color) {
     ctx.fill();
     ctx.stroke();
 }
-        
-function updateCanvas() {
-    ctx.putImageData(canvasData, 0, 0);
-}
 
 //populates the dart board and returns the counts of inside and outside the circle
 function generateThrows(n){
-    var outsideCount = 0;
-    var insideCount = 0;
     for(var i = 0; i < n; i++){
         var randX = Math.floor(Math.random() * (canvasWidth+1));
         var randY = Math.floor(Math.random() * (canvasHeight+1));
@@ -54,4 +51,3 @@ function generateThrows(n){
 drawPoint(centerX, centerY, "blue");
 var count = generateThrows(100);
 console.log(count[0] + " " + count[1]);
-//updateCanvas();
