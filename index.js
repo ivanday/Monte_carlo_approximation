@@ -1,54 +1,57 @@
-//set center of the canvas
-var centerX = 100;
-var centerY = 100;
+
 
 //draw the circle in the middle of the canvas
 var c = document.getElementById("monteCarlo");
 var ctx = c.getContext("2d");
 var canvasWidth = c.width;
 var canvasHeight = c.height;
+var centerX = canvasWidth / 2;
+var centerY = canvasHeight / 2;
+var radius = c.width / 2;
 ctx.beginPath();
-ctx.arc(100, 100, 100, 0, 2 * Math.PI);
+ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
 ctx.stroke();
 var canvasData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
 
 //draws the pixel at location and color
-function drawPixel (x, y, r, g, b, a) {
-    var index = (x + y * canvasWidth) * 4;
-    
-    canvasData.data[index + 0] = r;
-    canvasData.data[index + 1] = g;
-    canvasData.data[index + 2] = b;
-    canvasData.data[index + 3] = a;
+function drawPoint (x, y, color) {
+    ctx.beginPath();
+    ctx.arc(x, y, 5, 0, 2 * Math.PI);
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.stroke();
 }
         
 function updateCanvas() {
     ctx.putImageData(canvasData, 0, 0);
 }
 
+//populates the dart board and returns the counts of inside and outside the circle
 function generateThrows(n){
     var outsideCount = 0;
     var insideCount = 0;
     for(var i = 0; i < n; i++){
-        var randX = Math.floor(Math.random() * 201);
-        var randY = Math.floor(Math.random() * 201);
+        var randX = Math.floor(Math.random() * (canvasWidth+1));
+        var randY = Math.floor(Math.random() * (canvasHeight+1));
         var a = randX - centerX;
         var b = randY - centerY;
-        var c = Math.sqrt(a*a + b*b);
-        console.log(c);
-        if(c > 100){
-            drawPixel(randX, randY, 0, 255, 0, 255);
+        var distance = Math.sqrt(a*a + b*b);
+        console.log(distance);
+        if(distance > radius){
+            drawPoint(randX, randY, "green");
             outsideCount = outsideCount + 1;
         }
         else{
-            drawPixel(randX, randY, 255, 0, 0, 255);
+            drawPoint(randX, randY, "red");
             insideCount = insideCount + 1;
         }
 
     }
-    console.log(outsideCount + " " + insideCount);
+    //console.log(outsideCount + " " + insideCount);
+    return [insideCount, outsideCount];
 }
 
-drawPixel(100,100,0,0,255,255);
-generateThrows(100);
-updateCanvas();
+drawPoint(centerX, centerY, "blue");
+var count = generateThrows(100);
+console.log(count[0] + " " + count[1]);
+//updateCanvas();
